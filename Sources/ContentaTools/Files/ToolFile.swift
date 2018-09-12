@@ -7,14 +7,14 @@ import Foundation
 public class ToolFile : FileItem {
 
     // MARK: instance variables
-    public fileprivate(set) var filename: String
+    public fileprivate(set) var fName: String
     public fileprivate(set) var directory: DirectoryItem
 
 
     // MARK: initializer
     public init(_ directory: DirectoryItem,_ name: String ) {
         self.directory = directory
-        self.filename = name
+        self.fName = name
     }
     
     public convenience init?(pathString: String, expandTilde: Bool = false ) {
@@ -31,8 +31,24 @@ public class ToolFile : FileItem {
     }
 
     public var path : ToolPath {
-        return self.directory.path + self.filename
+        return self.directory.path + self.fName
     }
+
+    // TODO: changing the filename should result in new ToolFile
+    // this should be a struct
+    public var filename : String {
+        return self.fName
+    }
+    
+    public func setFilename(_ newValue: String) -> ToolFile {
+        return ToolFile( self.directory, newValue )
+    }
+
+    public func setFilenameExtension(_ newValue: String) -> ToolFile {
+        let base = (self.fName as NSString).deletingPathExtension
+        return ToolFile( self.directory, base + ".\(newValue)" )
+    }
+
 
     public var fullPath : String {
         return self.path.string
@@ -66,4 +82,11 @@ public class ToolFile : FileItem {
 extension ToolFile : CustomStringConvertible {
     public var description: String { return "\(self.path.description)" }
     public var debugDescription: String { return "File: \(self.path.debugDescription)" }
+}
+
+extension ToolFile : Equatable {
+    // MARK: Comparable and Operators
+    public static func == (lhs: ToolFile, rhs: ToolFile) -> Bool {
+        return lhs.path == rhs.path
+    }
 }

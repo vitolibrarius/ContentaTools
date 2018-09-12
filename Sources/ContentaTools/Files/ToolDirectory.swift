@@ -26,6 +26,10 @@ public class ToolDirectory : DirectoryItem {
         return self.dirPath
     }
 
+    public func setDirectoryName(_ newValue: String) -> ToolDirectory {
+        return ToolDirectory( self.parent().path + newValue )
+    }
+
     public func parent() -> DirectoryItem {
         return ToolDirectory(self.path.parent)
     }
@@ -105,4 +109,11 @@ extension ToolDirectory {
 extension ToolDirectory : CustomStringConvertible {
     public var description: String { return "\(self.path.description)" }
     public var debugDescription: String { return "File: \(self.path.debugDescription)" }
+}
+
+extension ToolDirectory : Equatable {
+    // MARK: Equatable
+    public static func == (lhs: ToolDirectory, rhs: ToolDirectory) -> Bool {
+        return lhs.path == rhs.path
+    }
 }

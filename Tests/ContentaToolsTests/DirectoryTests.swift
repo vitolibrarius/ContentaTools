@@ -9,6 +9,7 @@ import XCTest
 final class DirectoryTests : XCTestCase {
     static var allTests = [
         ("testTMP", testTMP),
+        ("testChangeName", testChangeName),
         ("testMkdir", testMkdir),
         ("testMkpath", testMkpath),
     ]
@@ -16,6 +17,14 @@ final class DirectoryTests : XCTestCase {
     func testTMP() {
         let tmp : ToolDirectory = ToolDirectory.systemTmp
         XCTAssertEqual(tmp.path, ToolPath("/private/tmp"), "tmp is /private/tmp")
+    }
+
+    func testChangeName() {
+        let tmp : ToolDirectory = ToolDirectory.systemTmp.subdirectory("original")
+        XCTAssertEqual(tmp.path, ToolPath("/private/tmp/original"))
+        let newDir = tmp.setDirectoryName("replacement")
+        XCTAssertNotEqual(tmp, newDir)
+        XCTAssertEqual(newDir.path, ToolPath("/private/tmp/replacement"))
     }
 
     func testMkdir() {

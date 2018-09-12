@@ -111,6 +111,10 @@ public protocol DirectoryItem : FileSystemItem {
 }
 
 extension FileItem {
+    public var fileExtension: String {
+        return (self.path.string as NSString).pathExtension
+    }
+
     public func create() {
         FileManager.default.createFile(atPath: self.path.string, contents: nil, attributes: nil)
     }

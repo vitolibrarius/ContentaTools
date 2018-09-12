@@ -8,10 +8,29 @@ import XCTest
 
 final class FileTests : XCTestCase {
     static var allTests = [
+        ("testChangingFilename", testChangingFilename),
+        ("testAttributes", testAttributes),
         ("testCreateFile", testCreateFile),
         ("testWriteFile", testWriteFile),
     ]
 
+    func testChangingFilename() {
+        let name = "test.file"
+        let new_name = "newname.file"
+        let new_extension = "test.json"
+
+        let origFile : ToolFile = ToolFile(ToolDirectory.systemTmp, name)
+        XCTAssertEqual(origFile.path, ToolPath("/private/tmp/" + name), "tmp is /private/tmp/\(name)")
+        
+        let newFile : ToolFile = origFile.setFilename(new_name)
+        XCTAssertNotEqual(origFile, newFile)
+        XCTAssertEqual(newFile.filename, new_name)
+
+        let newFileExtension : ToolFile = origFile.setFilenameExtension("json")
+        XCTAssertNotEqual(origFile, newFile)
+        XCTAssertEqual(newFileExtension.filename, new_extension)
+    }
+    
     func testCreateFile() {
         let name = "test.file"
         let tmpFile : ToolFile = ToolFile(ToolDirectory.systemTmp, name)
