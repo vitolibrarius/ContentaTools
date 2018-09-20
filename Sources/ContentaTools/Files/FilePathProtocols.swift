@@ -45,9 +45,9 @@ extension FileSystemItem {
         return self.path.isExecutable
     }
     
-    public var isDeletable: Bool {
-        return self.path.isDeletable
-    }
+//    public var isDeletable: Bool {
+//        return self.path.isDeletable
+//    }
 
     public func delete() throws -> () {
         try FileManager.default.removeItem(atPath: self.path.string)
@@ -112,7 +112,7 @@ public protocol DirectoryItem : FileSystemItem {
 
 extension FileItem {
     public var fileExtension: String {
-        return (self.path.string as NSString).pathExtension
+        return self.path.fileExtension
     }
 
     public func create() {

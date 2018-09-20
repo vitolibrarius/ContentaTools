@@ -16,7 +16,13 @@ public class ToolFile : FileItem {
         self.directory = directory
         self.fName = name
     }
-    
+
+    public init(_ name: String ) {
+        let path = ToolPath(name)
+        self.directory = ToolDirectory(path.parent)
+        self.fName = path.lastPathComponent
+    }
+
     public convenience init?(pathString: String, expandTilde: Bool = false ) {
         let p = ToolPath(pathString, expandTilde: expandTilde)
         self.init(ToolDirectory(p.parent), p.lastPathComponent)
@@ -45,8 +51,11 @@ public class ToolFile : FileItem {
     }
 
     public func setFilenameExtension(_ newValue: String) -> ToolFile {
-        let base = (self.fName as NSString).deletingPathExtension
-        return ToolFile( self.directory, base + ".\(newValue)" )
+        let fileWithoutExtension : ToolPath = ToolPath(self.fName).removingFileExtension()
+        if newValue.isEmpty {
+            return ToolFile(self.directory, fileWithoutExtension.string)
+        }
+        return ToolFile( self.directory, fileWithoutExtension.string + ".\(newValue)" )
     }
 
 
@@ -67,7 +76,7 @@ public class ToolFile : FileItem {
     }
     
     public func read(_ encoding: String.Encoding = String.Encoding.utf8) throws -> String {
-        return try NSString(contentsOfFile: self.fullPath, encoding: encoding.rawValue).substring(from: 0) as String
+        return try String(contentsOfFile: self.fullPath, encoding: encoding)
     }
     
     public func write(_ data: Data) throws {

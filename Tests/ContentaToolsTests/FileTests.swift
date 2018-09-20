@@ -12,7 +12,36 @@ final class FileTests : XCTestCase {
         ("testAttributes", testAttributes),
         ("testCreateFile", testCreateFile),
         ("testWriteFile", testWriteFile),
+        ("testFileExtension", testFileExtension),
     ]
+
+    func testFileExtension() {
+        let test1 : ToolFile = ToolFile(ToolDirectory.systemTmp, "noextension")
+        XCTAssertEqual( test1.fileExtension, "" )
+        
+        let test2 : ToolFile = ToolFile(ToolDirectory.systemTmp, "name.xls")
+        XCTAssertEqual( test2.fileExtension, "xls" )
+        
+        let test3 : ToolFile = ToolFile(ToolDirectory.systemTmp, "name.xls.backup")
+        XCTAssertEqual( test3.fileExtension, "backup" )
+        
+        let test4 : ToolFile = ToolFile(ToolDirectory.systemTmp, ".DS_Store")
+        XCTAssertEqual( test4.fileExtension, "" )
+
+        let test5 : ToolFile = ToolFile(ToolDirectory.systemTmp, ".DS_Store.")
+        XCTAssertEqual( test5.fileExtension, "" )
+        
+        let test6 : ToolFile = ToolFile(ToolDirectory.systemTmp, "name.xls..backup")
+        XCTAssertEqual( test6.fileExtension, "backup" )
+
+        let test7 : ToolFile = ToolFile("/path/more/name.xls.backup")
+        let result1 : ToolFile = test7.setFilenameExtension("")
+        XCTAssertEqual( result1, ToolFile("/path/more/name.xls") )
+
+        let result2 : ToolFile = test7.setFilenameExtension("junk")
+        XCTAssertEqual( result2, ToolFile("/path/more/name.xls.junk") )
+    }
+    
 
     func testChangingFilename() {
         let name = "test.file"

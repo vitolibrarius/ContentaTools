@@ -1,10 +1,11 @@
 import XCTest
 
-import SwiftToolsTests
+@testable import ContentaToolsTests
 
-var tests = [XCTestCaseEntry]()
-tests += IPAddressTests.allTests()
-tests += DirectoryTests.allTests()
-tests += FileTests.allTests()
-tests += PathTests.allTests()
-XCTMain(tests)
+XCTMain([
+     testCase(IPAddressTests.allTests),
+     testCase(DirectoryTests.allTests),
+     testCase(FileTests.allTests),
+     testCase(PathTests.allTests),
+     testCase(StringExtensionTests.allTests),
+])

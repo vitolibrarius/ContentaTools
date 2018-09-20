@@ -25,8 +25,10 @@ public struct ToolPath {
     }
     
     public init(_ path: String, expandTilde: Bool = false ) {
-        if expandTilde {
-            self.pathString = (path as NSString).expandingTildeInPath
+        let hasTilde : Bool = (!path.isEmpty) && (path.first! == "~")
+        if expandTilde && hasTilde {
+            let homeDirURL = URL(fileURLWithPath: NSHomeDirectory())
+            self.pathString = path.replacingOccurrences(of: "~", with: homeDirURL.path)
         }
         else {
             self.pathString = path
@@ -53,11 +55,28 @@ public struct ToolPath {
     }
     
     public var standardizedPathString: String {
-        return (self.string as NSString).standardizingPath
+        return url.standardizedFileURL.path
     }
 
     public var lastPathComponent: String {
-        return (self.string as NSString).lastPathComponent
+        return url.lastPathComponent
+    }
+
+    public var fileExtension: String {
+        let lastSplit = lastPathComponent.split(separator: ".")
+        if lastSplit.count > 1 {
+            return String(lastSplit.last!)
+        }
+        return ""
+    }
+
+    public func removingFileExtension() -> ToolPath {
+        var lastSplit = lastPathComponent.split(separator: ".")
+        if lastSplit.count > 1 {
+            _ = lastSplit.removeLast()
+            return parent + lastSplit.joined(separator: ".")
+        }
+        return self
     }
 
     // MARK: Informational
@@ -190,8 +209,10 @@ extension ToolPath {
             fatalError("Path index out of range")
         } else {
             var result = components.first!
-            for i in 1 ..< position + 1 {
-                result += components[i]
+            if position > 0 {
+                for i in 1 ..< position + 1 {
+                    result += components[i]
+                }
             }
             return result
         }
@@ -207,21 +228,33 @@ extension ToolPath {
         }
 
         if isAbsolute {
-            return (absolute.pathString as NSString).pathComponents.enumerated().compactMap {
+            let components : [String] = url.pathComponents
+            return components.enumerated().compactMap {
                 (($0 == 0 || $1 != "/") && $1 != ".") ? ToolPath($1) : nil
             }
         } else {
-            let comps = (self.pathString as NSString).pathComponents.enumerated()
+            let compSubStrings : [Substring] = pathString.split(separator: PATH_SEPARATOR.first!)
             // remove extraneous `/` and `.`
-            let components = comps.compactMap {
-                (($0 == 0 || $1 != "/") && $1 != ".") ? ToolPath($1) : nil
+            let components : [ToolPath] = compSubStrings.compactMap { (substr) -> ToolPath? in
+                if (substr.count == 0 || substr != "/" ) && substr != "." {
+                    return ToolPath(String(substr))
+                }
+                return nil
             }
+//            let components = comps.compactMap {
+//                (($0 == 0 || $1 != "/") && $1 != ".") ? ToolPath($1) : nil
+//            }
             return _clean(components)
         }
     }
     
     public var parent: ToolPath {
-        return ToolPath((pathString as NSString).deletingLastPathComponent)
+        let idx = self.endIndex
+        if idx > 1 {
+            // indexes for absolute path /a/b/c = [ "/", "a", "b", "c" ]
+            return self[idx-2]
+        }
+        return isAbsolute ? ToolPath("/") : ToolPath("")
     }
 }
 
