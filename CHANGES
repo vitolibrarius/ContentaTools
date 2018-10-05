@@ -1,3 +1,6 @@
+Version 0.2.1:
+* 80cc087 -  (HEAD -> master, origin/master, origin/HEAD) Added directory.file(name) function (Thu Oct 4 20:03:56 2018 -0700) <Vito Librarius>
+
 Version 0.2.0:
 * eeffba9 -  (HEAD -> master, origin/master, origin/HEAD) Supported Docker build and full test on Linux (Thu Sep 20 10:54:37 2018 -0600) <Vito Librarius>
 
