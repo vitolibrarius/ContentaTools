@@ -10,6 +10,7 @@ final class DirectoryTests : XCTestCase {
     static var allTests = [
         ("testTMP", testTMP),
         ("testChangeName", testChangeName),
+        ("testFilename", testFilename),
         ("testMkdir", testMkdir),
         ("testMkpath", testMkpath),
     ]
@@ -74,5 +75,14 @@ final class DirectoryTests : XCTestCase {
         catch {
             XCTAssertTrue(false, error.localizedDescription)
         }
+    }
+
+    func testFilename() {
+        let tmp : ToolDirectory = ToolDirectory.systemTmp.subdirectory("original")
+        XCTAssertEqual(tmp.path, ToolPath("/private/tmp/original"))
+        let newFile = tmp.file("little baby")
+        XCTAssertNotEqual(tmp.path, newFile.path)
+        XCTAssertEqual(newFile.path, ToolPath("/private/tmp/original/little baby"))
+//        XCTAssertEqual(newFile.Type, ToolFile.Type)
     }
 }

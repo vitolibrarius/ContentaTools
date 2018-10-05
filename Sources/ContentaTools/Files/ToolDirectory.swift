@@ -47,6 +47,10 @@ public class ToolDirectory : DirectoryItem {
         return subItem(name, type: FSItemType.DIRECTORY) as! ToolDirectory
     }
 
+    public func file(_ name: String) -> ToolFile {
+        return subItem(name, type: FSItemType.FILE) as! ToolFile
+    }
+
     public func children() throws -> [FileSystemItem] {
         return try FileManager.default.contentsOfDirectory(atPath: path.string).map {
             let childPath = path + $0
