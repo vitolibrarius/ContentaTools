@@ -8,4 +8,5 @@ XCTMain([
      testCase(FileTests.allTests),
      testCase(PathTests.allTests),
      testCase(StringExtensionTests.allTests),
+     testCase(RepeatingTimerTests.allTests),
 ])
