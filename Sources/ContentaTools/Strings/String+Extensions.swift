@@ -47,4 +47,22 @@ extension String {
         }
         return false
     }
+
+//    public var localized: String {
+//        return NSLocalizedString(self, tableName: nil, bundle: Bundle.main, value: "", comment: "")
+//    }
+
+    public var base64encoded: String {
+        guard let data: Data = data(using: .utf8) else {
+            return ""
+        }
+        return data.base64EncodedString()
+    }
+    
+    public var base64decoded: String {
+        guard let data = Data(base64Encoded: String(self), options: .ignoreUnknownCharacters), let dataString = NSString(data: data, encoding: String.Encoding.utf8.rawValue) else {
+            return ""
+        }
+        return String(describing: dataString)
+    }
 }

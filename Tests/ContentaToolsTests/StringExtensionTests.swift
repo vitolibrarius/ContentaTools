@@ -48,5 +48,28 @@ final class StringExtensionTests : XCTestCase {
         testString.trim()
         XCTAssertEqual(testString, expected)
     }
+    
+    func testIsStringIn() {
+        let list: [String] = [ "one", "two", "three", "four"]
+        XCTAssertTrue( "one".isStringIn(array: list) )
+        XCTAssertTrue( "ONE".isStringIn(array: list, ignoreCase: true) )
+
+        XCTAssertFalse( "xx".isStringIn(array: list) )
+        XCTAssertFalse( "ONE".isStringIn(array: list, ignoreCase: false) )
+    }
+    
+    func testBase64Encode() {
+        let testString = "the quick brown fox jumps over the lazy dog"
+        let expected = "dGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZw=="
+        let enc = testString.base64encoded
+        XCTAssertEqual(enc, expected)
+    }
+
+    func testBase64Decode() {
+        let testString = "dGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZ3M="
+        let expected = "the quick brown fox jumps over the lazy dogs"
+        let enc = testString.base64decoded
+        XCTAssertEqual(enc, expected)
+    }
 }
 
