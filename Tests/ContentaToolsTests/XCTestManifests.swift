@@ -8,6 +8,8 @@ public func allTests() -> [XCTestCaseEntry] {
         testCase(FileTests.allTests),
         testCase(PathTests.allTests),
         testCase(RepeatingTimerTests.allTests),
+        testCase(FileCacheTests.allTests),
+        testCase(MemoryCacheTests.allTests),
     ]
 }
 #endif

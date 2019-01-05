@@ -20,7 +20,7 @@ final class RepeatingTimerTests : XCTestCase {
         t.resume()
         
         // sleep the main thread for 12 seconds.
-        sleep(12)
+        sleep(14)
         t.suspend()
         XCTAssertEqual( 4, counter )
     }
