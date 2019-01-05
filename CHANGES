@@ -1,3 +1,8 @@
+Version 0.3.0:
+* bb557fb -  (HEAD -> master) Added Cache objects (Fri Jan 4 17:50:06 2019 -0700) <Vito Librarius>
+* a234824 -  Added Tests for String Base64 extensions (Tue Nov 20 10:22:19 2018 -0700) <Vito Librarius>
+* 7961fca -  Added repeating timer + test (Mon Nov 19 11:49:20 2018 -0700) <Vito Librarius>
+
 Version 0.2.1:
 * 80cc087 -  (HEAD -> master, origin/master, origin/HEAD) Added directory.file(name) function (Thu Oct 4 20:03:56 2018 -0700) <Vito Librarius>
 
