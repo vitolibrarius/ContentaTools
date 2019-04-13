@@ -63,8 +63,18 @@ public class FileCache<T: Encodable>: Cache {
 
         do {
             // Save to file
-            let data = NSKeyedArchiver.archivedData(withRootObject: object)
-            try file.write(data)
+            var data: Data? = nil
+            if #available(OSX 10.13, *) {
+                data = try NSKeyedArchiver.archivedData(withRootObject: object, requiringSecureCoding: false)
+            } else if #available(OSX 10.11, *) {
+                data = NSKeyedArchiver.archivedData(withRootObject: object)
+            } else {
+                    // Fallback on earlier versions
+            }
+
+            if ( data != nil ) {
+                try file.write(data!)
+            }
 
             // Add entry
             entries = entries.filter { $0.0 != file }

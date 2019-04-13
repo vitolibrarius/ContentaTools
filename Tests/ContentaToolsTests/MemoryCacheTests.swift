@@ -37,15 +37,19 @@ class MemoryCacheTests: XCTestCase {
     func testAccessors() {
         cache.setObject(object: "vito", forKey: "name")
         let object = cache.objectForKey(key: "name")
-        
         XCTAssertEqual(object ?? "", "vito")
+
+        let object2 = cache.objectForKey(key: "noname")
+        XCTAssertNotEqual(object2 ?? "", "vito")
     }
     
     func testSubscription() {
         cache["person"] = "Vito Librarius"
         let object = cache["person"]
-        
         XCTAssertEqual(object ?? "", "Vito Librarius")
+
+        let object2 = cache["none"]
+        XCTAssertNotEqual(object2 ?? "", "Vito Librarius")
     }
     
     func testCount() {

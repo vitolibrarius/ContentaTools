@@ -129,8 +129,13 @@ extension ToolPath : CustomStringConvertible {
 }
 
 extension ToolPath : Hashable {
-    public var hashValue: Int {
-        return pathString.hashValue
+    public func hash(into hasher: inout Hasher) {
+        if isAbsolute {
+            hasher.combine(absolute)
+        }
+        else {
+            hasher.combine(pathString)
+        }
     }
 }
 
